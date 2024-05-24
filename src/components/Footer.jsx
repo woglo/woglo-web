@@ -30,13 +30,7 @@ function Footer() {
                 <FontAwesomeIcon icon={faPhoneAlt} className="mr-2" />
                 <p>+91-944 66 88 095</p>
               </div>
-              <div className="flex mb-2">
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 mt-1" />
-                
-                <p className="max-w-xs"><span className='font-semibold'>Branch : </span>
-                  M.K.K Building, Between Matha Theatre & Zeenath Theatre (One Way Road), Priyadarshi Road, Periyar Nagar, Near Railway Station, Aluva, Kerala 683101
-                </p>
-              </div>
+              
               <div className="flex mb-2">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 mt-1" />
                 <p className="max-w-xs"><span className='font-semibold'>Main Office : </span>
@@ -50,9 +44,16 @@ function Footer() {
                 <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
                 <p>Mon-Sat 09.00 - 21.00</p>
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center mb-2">
                 <FontAwesomeIcon icon={faGlobe} className="mr-2" />
                 <p>Sunday CLOSED</p>
+              </div>
+              <div className="flex">
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 mt-1" />
+                
+                <p className="max-w-xs"><span className='font-semibold'>Branch : </span>
+                  M.K.K Building, Between Matha Theatre & Zeenath Theatre (One Way Road), Priyadarshi Road, Periyar Nagar, Near Railway Station, Aluva, Kerala 683101
+                </p>
               </div>
             </div>
           </div>

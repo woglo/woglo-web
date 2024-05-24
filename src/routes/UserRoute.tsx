@@ -11,6 +11,7 @@ function UserRoute() {
   return (
     <>
     <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
             <Route path="/cabs" element={<Cabs />} />
             <Route path='/about-us' element={<AboutUs />} />
