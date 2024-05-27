@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faEnvelope, faHome, faImage, faInfoCircle, faTaxi, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +6,7 @@ import { useState } from "react";
 
 function Home() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -30,10 +31,10 @@ function Home() {
                         />
                     </div>
                     <div className={`flex-col md:flex md:flex-row md:items-center gap-10 md:mr-20 text-white text-lg font-semibold ${isOpen ? 'flex ' : 'hidden'} md:flex`}>
-                        <div onClick={() => navigate('/home')} className="flex items-center gap-2 hover:text-yellow-400 cursor-pointer transition duration-300 ease-in-out">
-                            <FontAwesomeIcon icon={faHome} />
-                            <p>Home</p>
-                        </div>
+                    <div onClick={() => navigate('/home')} className={`flex items-center gap-2 ${location.pathname === '/home' || location.pathname === '/' ? 'text-yellow-400' : ''} hover:text-yellow-400 cursor-pointer transition duration-300 ease-in-out`}>
+        <FontAwesomeIcon icon={faHome} />
+        <p>Home</p>
+      </div>
                         <div onClick={() => navigate('/cabs')} className="flex items-center gap-2 hover:text-yellow-400 cursor-pointer transition duration-300 ease-in-out">
                             <FontAwesomeIcon icon={faTaxi} />
                             <p>Cabs</p>
@@ -89,11 +90,7 @@ function Home() {
           className="w-64 md:w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
           name="country"
         >
-          <option value="india">India</option>
-          <option value="usa">USA</option>
-          <option value="canada" selected>
-            Canada
-          </option>
+          <option value="kochi">Kochi</option>
         </select>
       </div>
 
@@ -106,11 +103,9 @@ function Home() {
           className="w-64 md:w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
           name="country"
         >
-          <option value="india">India</option>
-          <option value="usa">USA</option>
-          <option value="canada" selected>
-            Canada
-          </option>
+          <option value="trivandrum">Trivandrum</option>
+          <option value="bangalore">Bangalore</option>
+         
         </select>
       </div>
     </div>
@@ -159,11 +154,17 @@ function Home() {
       </select>
     </div>
 
-    <div className="flex justify-center">
-      <button className="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-6 py-3 rounded-md hover:from-teal-600 hover:to-teal-800 transition">
-        Get Estimate
-      </button>
-    </div>
+    <div className="flex justify-center relative group">
+  <button 
+    className="bg-gradient-to-r from-teal-500 to-teal-700 text-white px-6 py-3 rounded-md hover:from-teal-600 hover:to-teal-800 transition"
+    disabled
+  >
+    Get Estimate
+  </button>
+  <div className="absolute bottom-full mb-2 hidden group-hover:block w-max bg-gray-800 text-white text-xs rounded py-1 px-2">
+  🚫This feature is under development
+  </div>
+</div>
   </div>
 </div>
 
