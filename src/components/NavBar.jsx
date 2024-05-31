@@ -36,7 +36,7 @@ function NavBar() {
         <FontAwesomeIcon icon={faHome} />
         <p>Home</p>
       </div>
-      <div onClick={() => navigate('/cabs')} className={getNavItemClass('/cabs')}>
+      <div onClick={() => navigate('/cabs')} className={` ${location.pathname==='/'?'md:flex items-center gap-2 cursor-pointer transition duration-300 ease-in-out text-yellow-400':getNavItemClass('/cabs')}`}>
         <FontAwesomeIcon icon={faTaxi} />
         <p>Cabs</p>
       </div>
