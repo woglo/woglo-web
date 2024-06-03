@@ -3,17 +3,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import PersonalDetails from "./PersonalDetails";
+import { toast } from "sonner";
+import TermsAndConditions from "./TermsAndConditions";
 
-function BookNow({ isOpen, onClose, cab }) {
+function BookNow({ isOpen, onClose, data, cab }) {
   const [pickupLocation, setPickupLocation] = useState('');
   const [suggestedLocations, setSuggestedLocations] = useState([]);
   const [pickupTime, setPickupTime] = useState('');
   const [pickupDate,setPickupDate] = useState('')
+  const [datePlaceHolder,setDatePlaceHolder] = useState("Travel Date")
   const [selectedHours, setSelectedHours] = useState('');
   const [total, setTotal] = useState(0);
   const [isPersonalDetailsModalOpen, setIsPersonalDetailsModalOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  const [result,setResult] = useState({});
+  const [result,setResult] = useState(data);
+  const [termsAndCondition,setTermsAndCondition] = useState(false)
 
   
   const locationData = [
@@ -552,7 +556,7 @@ function BookNow({ isOpen, onClose, cab }) {
     validateForm(pickupLocation, pickupTime, hrs);
   };
 
-  const handleBookNow = () => {
+  const handleBookNow = async() => {
     if (isFormValid) {
       const bookingResult = {
         location: pickupLocation,
@@ -561,8 +565,27 @@ function BookNow({ isOpen, onClose, cab }) {
         package: `${selectedHours} Hours`,
         vehicle: cab.name
       };
-      setResult(bookingResult);
-      setIsPersonalDetailsModalOpen(true);
+      const data = { ...result, ...bookingResult };
+     setIsFormValid(false)
+      try {
+      const response = await fetch(
+        "https://sheet.best/api/sheets/b18968b2-3d8c-4d47-863d-1872d55f6548",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      if (response.ok) {
+        console.log("Successfully submitted");
+        toast.success("Successfully Booked. We will reach you out for the confirmation")
+        onClose()
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
     }
   };
 
@@ -583,6 +606,10 @@ function BookNow({ isOpen, onClose, cab }) {
   const handlePersonalDetailsModal = () => {
     setIsPersonalDetailsModalOpen(!isPersonalDetailsModalOpen);
   };
+
+  const handleTermsAndConditions = ()=>{
+    setTermsAndCondition(!termsAndCondition)
+  }
 
   useEffect(() => {
     console.log("Result", result);
@@ -605,7 +632,7 @@ function BookNow({ isOpen, onClose, cab }) {
         <div className="flex items-center justify-between mb-4">
           <img className="w-44 rounded-lg" src={cab.image} alt="" />
           <div className="flex flex-col items-center">
-            <p className="text-lg font-semibold">{cab.name}</p>
+            <p className="text-lg font-semibold text-black">{cab.name}</p>
             <div className="flex items-center gap-2 text-gray-600">
               <FontAwesomeIcon icon={faUsers} />
               <p>{cab.capacity}</p>
@@ -613,8 +640,9 @@ function BookNow({ isOpen, onClose, cab }) {
           </div>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
-          <p className="text-sm mb-2">Enter your travel details:</p>
-          <div className="flex flex-col gap-2">
+
+          <div className="flex flex-col gap-2 -mt-3">
+            <label className="text-xs font-semibold text-black" htmlFor="">Pick-up Location:</label>
             <input
               type="text"
               placeholder="Pick-up Location"
@@ -627,7 +655,7 @@ function BookNow({ isOpen, onClose, cab }) {
                 {suggestedLocations.map((location, index) => (
                   <li
                     key={index}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-black"
                     onClick={() => handleLocation(location)}
                   >
                     {location}
@@ -635,29 +663,34 @@ function BookNow({ isOpen, onClose, cab }) {
                 ))}
               </ul>
             )}
+            <label className="text-xs font-semibold text-black" htmlFor="">Pick-up Date:</label>
             <input
               type="date"
               placeholder="Travel Date"
-              className="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onChange={(e)=>setPickupDate(e.target.value)}
             />
-            <div className="flex items-center gap-2 bg-white rounded-md border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500">
-              <FontAwesomeIcon icon={faClock} className="text-gray-400 mx-2" />
+            <label className="text-xs font-semibold text-black" htmlFor="">Pick-up Time:</label>
+
+            <div className="flex items-center gap-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              
               <input
                 type="time"
                 value={pickupTime}
                 onChange={handleTimeChange}
                 placeholder="Pick-up Time"
-                className="w-full px-3 py-2 rounded-md bg-transparent focus:outline-none"
+                className="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full "
               />
             </div>
+            <label className="text-xs font-semibold text-black" htmlFor="">Packages:</label>
+
             <select
               className="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onChange={handleRate}
               value={selectedHours}
             >
               <option value="" disabled>
-                Select Hours
+                Select Package
               </option>
               {[...Array(12)].map((_, i) => (
                 <option key={i + 1} value={i + 1}>
@@ -667,7 +700,7 @@ function BookNow({ isOpen, onClose, cab }) {
             </select>
           </div>
         </div>
-        <div className="flex justify-between mt-4 items-center">
+        <div className="flex flex-col md:flex-row justify-between mt-4 items-center">
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-2 bg-blue-100 font-semibold py-2 px-4 rounded-md transition-colors duration-300 shadow-inner">
               <p className="text-lg font-bold text-blue-800">Total Cost:</p>
@@ -675,13 +708,14 @@ function BookNow({ isOpen, onClose, cab }) {
             </div>
             <p className="text-xs">{`+₹${cab.tax}(Taxes & Charges)`}</p>
           </div>
-          <div>
+          <div className="mt-5 md:mt-0">
             <button
               className="bg-white text-red-400 font-semibold py-2 px-4 mr-2 rounded-md transition-colors duration-300"
               onClick={onClose}
             >
               Cancel
             </button>
+           
             <button
               className={`bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-300 ${!isFormValid && 'opacity-50 cursor-not-allowed'}`}
               onClick={handleBookNow}
@@ -689,16 +723,18 @@ function BookNow({ isOpen, onClose, cab }) {
             >
               Book Now
             </button>
+            <p className="text-xs ml-20 text-blue-500 underline cursor-pointer" onClick={handleTermsAndConditions}>Terms and Conditions</p>
+            
           </div>
         </div>
       </div>
-      {isPersonalDetailsModalOpen && (
-        <PersonalDetails
-          isOpen={isPersonalDetailsModalOpen}
-          onClose={handlePersonalDetailsModal}
-          packageDetails={result}
+      { termsAndCondition && (
+        <TermsAndConditions
+          isOpen={termsAndCondition}
+          onClose={handleTermsAndConditions}
+          cab={cab}
         />
-      )}
+      )} 
     </Modal>
   );
 }

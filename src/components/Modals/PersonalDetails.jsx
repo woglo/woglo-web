@@ -3,15 +3,17 @@ import Modal from 'react-modal';
 import { FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'sonner';
+import BookNow from './BookNow';
 
-function PersonalDetails({ isOpen, onClose, packageDetails }) {
+function PersonalDetails({ isOpen, onClose,cab }) {{/*packageDetails*/}
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
-  const [details,setDetails] = useState(packageDetails)
+  const [details,setDetails] = useState({})
+  const [isModalOpen,setIsModalOpen] = useState(false)
 
 //   const handleNameChange = (e) => {
 //     const nameValue = e.target.value;
@@ -99,27 +101,29 @@ const handleNameChange = (e) => {
       phone: phone,
       email: email || ""
     };
-    setDetails((prev) => ({ ...prev, ...person }));
-    const data = { ...details, ...person };
-    try {
-      const response = await fetch(
-        "https://sheet.best/api/sheets/b18968b2-3d8c-4d47-863d-1872d55f6548",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      if (response.ok) {
-        console.log("Successfully submitted");
-        toast.success("Successfully Booked. We will reach you out for the confirmation")
-        onClose()
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
+    setDetails(person)
+    setIsModalOpen(true)
+    // setDetails((prev) => ({ ...prev, ...person }));
+    // const data = { ...details, ...person };
+    // try {
+    //   const response = await fetch(
+    //     "https://sheet.best/api/sheets/b18968b2-3d8c-4d47-863d-1872d55f6548",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(data),
+    //     }
+    //   );
+    //   if (response.ok) {
+    //     console.log("Successfully submitted");
+    //     toast.success("Successfully Booked. We will reach you out for the confirmation")
+    //     onClose()
+    //   }
+    // } catch (error) {
+    //   console.error("Error submitting form:", error);
+    // }
   };
   
 
@@ -148,11 +152,11 @@ const handleNameChange = (e) => {
               placeholder="Enter your name"
               className={`w-full px-4 py-2 rounded-lg border ${
                 nameError ? 'border-red-500 focus:ring-red-500' : 'border-gray-400 focus:ring-teal-600'
-              } text-gray-800 focus:outline-none focus:ring-2`}
+              }  focus:outline-none focus:ring-2`}
               value={name}
               onChange={handleNameChange}
               required
-            />
+            />  
             {nameError && <p className="text-red-500 mt-1">{nameError}</p>}
           </div>
           <div className="mb-4">
@@ -164,7 +168,7 @@ const handleNameChange = (e) => {
               type="email"
               id="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              className="w-full px-4 py-2 rounded-lg border border-gray-400  focus:outline-none focus:ring-2 focus:ring-teal-600"
               value={email}
               onChange={(e)=>setEmail(e.target.value)}
               required
@@ -181,7 +185,7 @@ const handleNameChange = (e) => {
               placeholder="Enter your phone number"
               className={`w-full px-4 py-2 rounded-lg border ${
                 phoneError ? 'border-red-500 focus:ring-red-500' : 'border-gray-400 focus:ring-teal-600'
-              } text-gray-800 focus:outline-none focus:ring-2`}
+              } focus:outline-none focus:ring-2`}
               value={phone}
               onChange={handlePhoneChange}
               required
@@ -198,6 +202,7 @@ const handleNameChange = (e) => {
           </button>
         </div>
       </div>
+      {isModalOpen && <BookNow isOpen={isModalOpen} onClose={()=>setIsModalOpen(false)} data={details} cab={cab}/>}
     </Modal>
   )
 }
