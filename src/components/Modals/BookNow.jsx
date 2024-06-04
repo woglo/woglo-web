@@ -17,8 +17,13 @@ function BookNow({ isOpen, onClose, data, cab }) {
   const [isPersonalDetailsModalOpen, setIsPersonalDetailsModalOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [result,setResult] = useState(data);
+  const [agreeTermsAndCondition,setAgreeTermsAndCondition] = useState(false)
   const [termsAndCondition,setTermsAndCondition] = useState(false)
 
+  
+  useEffect(() => {
+    validateForm(pickupLocation, pickupTime, selectedHours, agreeTermsAndCondition);
+  }, [pickupLocation, pickupTime, selectedHours, agreeTermsAndCondition]);
   
   const locationData = [
     "Alappuzha",
@@ -545,7 +550,7 @@ function BookNow({ isOpen, onClose, data, cab }) {
 
   const handleTimeChange = (e) => {
     setPickupTime(e.target.value);
-    validateForm(pickupLocation, e.target.value, selectedHours);
+    validateForm(pickupLocation, e.target.value, selectedHours,agreeTermsAndCondition);
   };
 
   const handleRate = (e) => {
@@ -553,7 +558,7 @@ function BookNow({ isOpen, onClose, data, cab }) {
     const baseRate = cab.hourlyRate;
     setTotal(hrs * baseRate);
     setSelectedHours(hrs);
-    validateForm(pickupLocation, pickupTime, hrs);
+    validateForm(pickupLocation, pickupTime, hrs,agreeTermsAndCondition);
   };
 
   const handleBookNow = async() => {
@@ -592,11 +597,16 @@ function BookNow({ isOpen, onClose, data, cab }) {
   const handleLocation = (location) => {
     setPickupLocation(location);
     setSuggestedLocations([]);
-    validateForm(location, pickupTime, selectedHours);
+    validateForm(location, pickupTime, selectedHours,agreeTermsAndCondition);
   };
 
-  const validateForm = (location, time, hours) => {
-    if (location && time && hours) {
+  const handleCheckBox = ()=>{
+    setAgreeTermsAndCondition(!agreeTermsAndCondition)
+    validateForm(pickupLocation, pickupTime, selectedHours,agreeTermsAndCondition)
+  }
+
+  const validateForm = (location, time, hours,agreeTermsAndCondition) => {
+    if (location && time && hours && agreeTermsAndCondition===true) {
       setIsFormValid(true);
     } else {
       setIsFormValid(false);
@@ -699,7 +709,12 @@ function BookNow({ isOpen, onClose, data, cab }) {
               ))}
             </select>
           </div>
+          <div className="flex items-center mt-4">
+        <input type="checkbox" name="" id="" onClick={handleCheckBox} onChange={handleCheckBox} checked={agreeTermsAndCondition} />
+        <p className="text-xs ml-10 text-black" onClick={handleTermsAndConditions}>I accept the <span className="text-blue-500 underline cursor-pointer">Terms and Conditions</span></p>
         </div>
+          </div>
+
         <div className="flex flex-col md:flex-row justify-between mt-4 items-center">
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-2 bg-blue-100 font-semibold py-2 px-4 rounded-md transition-colors duration-300 shadow-inner">
@@ -723,7 +738,6 @@ function BookNow({ isOpen, onClose, data, cab }) {
             >
               Book Now
             </button>
-            <p className="text-xs ml-20 text-blue-500 underline cursor-pointer" onClick={handleTermsAndConditions}>Terms and Conditions</p>
             
           </div>
         </div>

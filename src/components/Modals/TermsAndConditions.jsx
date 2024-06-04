@@ -9,7 +9,7 @@ function TermsAndConditions({isOpen,onClose,cab}) {
     className=" bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/2 rounded-lg  p-6 max-h-[90vh] overflow-auto"
     overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40"
     >
-       <div className="bg-white">
+       <div className="bg-white text-black">
         <h2 className="text-2xl font-bold mb-2">Terms And Conditions</h2>
         <p className="text-sm">
         <span className='font-semibold'>Driver & Cab details</span><br/>
