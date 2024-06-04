@@ -11,34 +11,37 @@ function Cabs() {
   const [selectedCab,setSelectedCab] = useState(null);
   const cabOptions = [
     {
-      name: "Toyota Etios",
+      name: "Toyota Etios or similar",
       image: "https://www.pngitem.com/pimgs/m/133-1332903_white-etios-car-price-hd-png-download.png",
       capacity: "4+1",
       type: "Sedan",
       hourlyRate:300,
       tax:90,
       extraKm:18,
-      extraMin:5
+      extraMin:5,
+      luggage:1
     },
     {
-      name: "Ertiga",
+      name: "Ertiga or similar",
       image: "https://imgd.aeplcdn.com/1056x594/n/c6es93a_1572125.jpg",
       capacity: "6+1",
       type: "MUV",
       hourlyRate:350,
       tax:105,
       extraKm:22,
-      extraMin:7
+      extraMin:7,
+      luggage:2
     },
     {
-      name: "Toyota Innova",
+      name: "Toyota Innova or similar",
       image: "https://www.motorbeam.com/wp-content/uploads/Toyota-Innova1.jpg",
       capacity: "7+1",
       type: "SUV",
       hourlyRate:375,
       tax:115,
       extraKm:22,
-      extraMin:8
+      extraMin:8,
+      luggage:3
     },
     {
       name: "Force Tempo Traveller",

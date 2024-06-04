@@ -572,6 +572,9 @@ function BookNow({ isOpen, onClose, data, cab }) {
       };
       const data = { ...result, ...bookingResult };
      setIsFormValid(false)
+     console.log("Result",result)
+     console.log("Booking",bookingResult)
+     console.log("DAta",data)
       try {
       const response = await fetch(
         "https://sheet.best/api/sheets/b18968b2-3d8c-4d47-863d-1872d55f6548",
@@ -633,8 +636,8 @@ function BookNow({ isOpen, onClose, data, cab }) {
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40"
     >
       <div className="bg-gradient-to-r from-blue-900 to-teal-600 text-white rounded-t-lg p-4">
-        <h2 className="text-2xl font-bold mb-2">Book Your Journey</h2>
-        <p className="text-sm">
+        <h2 className="text-xl md:text-2xl font-bold mb-2">Book Your Journey</h2>
+        <p className="text-xs md:text-sm">
           Choose your preferred ride and let's hit the road!
         </p>
       </div>
@@ -642,8 +645,8 @@ function BookNow({ isOpen, onClose, data, cab }) {
         <div className="flex items-center justify-between mb-4">
           <img className="w-44 rounded-lg" src={cab.image} alt="" />
           <div className="flex flex-col items-center">
-            <p className="text-lg font-semibold text-black">{cab.name}</p>
-            <div className="flex items-center gap-2 text-gray-600">
+            <p className="text-md md:text-lg font-semibold text-black">{cab.name}</p>
+            <div className="text-sm flex items-center gap-2 text-gray-600">
               <FontAwesomeIcon icon={faUsers} />
               <p>{cab.capacity}</p>
             </div>
@@ -695,7 +698,7 @@ function BookNow({ isOpen, onClose, data, cab }) {
             <label className="text-xs font-semibold text-black" htmlFor="">Packages:</label>
 
             <select
-              className="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-2 py-1 md:px-3 md:py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onChange={handleRate}
               value={selectedHours}
             >
@@ -717,22 +720,22 @@ function BookNow({ isOpen, onClose, data, cab }) {
 
         <div className="flex flex-col md:flex-row justify-between mt-4 items-center">
           <div className="flex flex-col items-center">
-            <div className="flex items-center gap-2 bg-blue-100 font-semibold py-2 px-4 rounded-md transition-colors duration-300 shadow-inner">
-              <p className="text-lg font-bold text-blue-800">Total Cost:</p>
+            <div className="flex items-center gap-2 bg-blue-100 font-semibold px-1 md:py-2 md:px-4 rounded-md transition-colors duration-300 shadow-inner">
+              <p className="text-md md:text-lg font-bold text-blue-800">Total Cost:</p>
               <p className="text-lg font-semibold text-blue-600">₹{total}</p>
             </div>
             <p className="text-xs">{`+₹${cab.tax}(Taxes & Charges)`}</p>
           </div>
-          <div className="mt-5 md:mt-0">
+          <div className="mt-5 md:mt-0 ">
             <button
-              className="bg-white text-red-400 font-semibold py-2 px-4 mr-2 rounded-md transition-colors duration-300"
+              className="bg-white text-red-400 font-semibold px-2 md:py-2 md:px-4 mr-2 rounded-md transition-colors duration-300"
               onClick={onClose}
             >
               Cancel
             </button>
            
             <button
-              className={`bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-300 ${!isFormValid && 'opacity-50 cursor-not-allowed'}`}
+              className={`bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-2 md:py-2 md:px-4 rounded-md transition-colors duration-300 ${!isFormValid && 'opacity-50 cursor-not-allowed'}`}
               onClick={handleBookNow}
               disabled={!isFormValid}
             >

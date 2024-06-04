@@ -4,6 +4,8 @@ import { FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'sonner';
 import BookNow from './BookNow';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 function PersonalDetails({ isOpen, onClose,cab }) {{/*packageDetails*/}
   const [name, setName] = useState('');
@@ -103,27 +105,6 @@ const handleNameChange = (e) => {
     };
     setDetails(person)
     setIsModalOpen(true)
-    // setDetails((prev) => ({ ...prev, ...person }));
-    // const data = { ...details, ...person };
-    // try {
-    //   const response = await fetch(
-    //     "https://sheet.best/api/sheets/b18968b2-3d8c-4d47-863d-1872d55f6548",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(data),
-    //     }
-    //   );
-    //   if (response.ok) {
-    //     console.log("Successfully submitted");
-    //     toast.success("Successfully Booked. We will reach you out for the confirmation")
-    //     onClose()
-    //   }
-    // } catch (error) {
-    //   console.error("Error submitting form:", error);
-    // }
   };
   
 
@@ -134,10 +115,13 @@ const handleNameChange = (e) => {
       className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/2 rounded-lg shadow-lg p-6"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-40"
     >
+      <button onClick={onClose} className="float-right">
+        <FontAwesomeIcon icon={faX} className='mr-2 text-red-500'/>
+      </button>
       <div className="bg-white rounded-lg p-6">
         <div className="bg-cover bg-center h-36 rounded-t-lg" style={{ backgroundImage: 'url("https://source.unsplash.com/random/800x600?beach")' }}></div>
         <div className="p-6">
-          <h2 className="text-3xl font-bold mb-6 flex items-center text-teal-500">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center text-teal-500">
             <FaUser className="mr-2" />
             Personal Details
           </h2>
