@@ -724,7 +724,7 @@ function BookNow({ isOpen, onClose, data, cab }) {
               <p className="text-md md:text-lg font-bold text-blue-800">Total Cost:</p>
               <p className="text-lg font-semibold text-blue-600">₹{total}</p>
             </div>
-            <p className="text-xs">{`+₹${cab.tax}(Taxes & Charges)`}</p>
+            <p className="text-xs text-black">{`+₹${cab.tax}(Taxes & Charges)`}</p>
           </div>
           <div className="mt-5 md:mt-0 ">
             <button
