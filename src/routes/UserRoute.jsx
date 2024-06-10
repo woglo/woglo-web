@@ -20,9 +20,9 @@ function UserRoute() {
             <Route path='/about-us' element={<AboutUs />} />
             <Route path='/contact-us' element={<ContactUs />} />
             <Route path='/gallery' element={<Gallery />} />
-            {/* <Route path='/login' element={<Login />} />
+            {/* <Route path='/login' element={<Login />} /> */}
             <Route path='/signup' element={<Signup />} />
-            <Route path='/account-setup' element={<AccountSetup />} /> */}
+            {/* <Route path='/account-setup' element={<AccountSetup />} /> */}
 
 
             </Routes>
