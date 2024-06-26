@@ -1,17 +1,29 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faEnvelope, faHome, faImage, faInfoCircle, faTaxi, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faEnvelope, faHome, faImage, faInfoCircle, faSignIn, faSignOut, faTaxi, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../utils/reducers/authSlice";
 
 function Home() {
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch()
+    const user = useSelector((state)=>state.auth.userDetails)
     const [isOpen, setIsOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleMenu = () => {
       setIsOpen(!isOpen);
     };
+    const toggleDropdown = () => {
+      setIsDropdownOpen(!isDropdownOpen);
+    };
+    const handleLogout = ()=>{
+      dispatch(logout())
+      navigate('/login')
+    }
 
     return (
         <>
@@ -51,6 +63,35 @@ function Home() {
                             <FontAwesomeIcon icon={faImage} />
                             <p>Gallery</p>
                         </div>
+                        {user && Object.keys(user).length !== 0 ? (
+       <div className="relative" onClick={toggleDropdown}>
+       <div className='md:flex items-center gap-2 cursor-pointer transition duration-300 ease-in-out hover:text-yellow-400'>
+         <img className='rounded-full w-10 h-10' src={user.profileImage} alt="" />
+         
+       </div>
+       {isDropdownOpen && (
+         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+           <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer" onClick={() => { navigate('/profile'); setIsOpen(false); }}>
+             Profile
+           </div>
+           <div onClick={handleLogout} className='block px-4 py-2 text-gray-800 hover:bg-gray-100 md:flex items-center gap-2 cursor-pointer transition duration-300 ease-in-out hover:text-red-500'>
+          <FontAwesomeIcon icon={faSignOut} className='text-red-500' />
+          <p>Logout</p>
+        </div>
+         </div>
+       )}
+     </div>
+      //    <div onClick={handleLogout} className='md:flex items-center gap-2 cursor-pointer transition duration-300 ease-in-out hover:text-red-500'>
+      //    <FontAwesomeIcon icon={faSignOut} className='text-red-500' />
+      //    <p>Logout</p>
+      //  </div>
+      ):
+      (
+        <div onClick={()=>navigate('/login')} className='md:flex items-center gap-2 cursor-pointer transition duration-300 ease-in-out hover:text-yellow-400'>
+         <FontAwesomeIcon icon={faSignIn}  />
+         <p>Login</p>
+       </div>
+      )}
                     </div>
                 </div>
             </nav>

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { postOTP, resendOTP } from '../../services/api/user/apiMethods';
+import { forgetOtpVerification, postOTP, resendOTP } from '../../services/api/user/apiMethods';
+import HashLoader from "react-spinners/HashLoader";
 
-function OTPModal({ email, onClose }){
+function OTPModal({ forgetOtp, email, onClose }){
     const [OTP, setOtp] = useState(['', '', '', '', '', '']);
     const [timer,setTimer] = useState(60)
+    const [loading,setLoading] = useState(false)
     const [resendVisible,setResendVisible] = useState(false)
     const otpInputs = Array.from({ length: 6 }, (_, i) => i); 
     const inputRefs = useRef([]);
@@ -64,18 +66,46 @@ function OTPModal({ email, onClose }){
     }
 
     const handleSubmit = ()=>{
+        setLoading(true)
         const otp = OTP.join('');
-        postOTP({otp})
-        .then((response)=>{
-            const data = response.data;
-            if(response.status===200){
-                toast.success(data.message);
-                localStorage.setItem('userId',data.newUser._id);
-                navigate('/login')
-            }else{
-                toast.error(data.error);
+        if(!forgetOtp){
+            try {
+                postOTP({otp})
+                .then((response)=>{
+                    const data = response.data;
+                    if(response.status===200){
+                        toast.success(data.message);
+                        localStorage.setItem('userId',data.newUser._id);
+                        navigate('/login')
+                    }else{
+                        toast.error(data.error);
+                    }
+                })
+            } catch (error) {
+                toast.error(error)
+            } finally {
+                setLoading(false)
             }
-        })
+       
+        }else{
+            try {
+                forgetOtpVerification({otp})
+                .then((response)=>{
+                    const data = response.data;
+                    if(response.status===200){
+                        toast.success(data.message);
+                        navigate('/change-password')
+                    }else{
+                        toast.error(data.error);
+                    }
+                })
+            } catch (error) {
+                toast.error(error)
+              } finally {
+                setLoading(false)
+              }
+           
+        }
     }
 
     return (
@@ -119,8 +149,10 @@ function OTPModal({ email, onClose }){
                 type="submit"
                 onClick={handleSubmit}
                 className="w-[9rem] mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700"
+                disabled={loading}
                 >
-            Submit OTP
+                    {loading ? <HashLoader size={20} className='mt-1' color="#ffffff" /> : "Submit OTP"}
+            
         </button>
     )}
                 

@@ -5,9 +5,12 @@ import { Link } from 'react-router-dom';
 import { postRegister } from '../services/api/user/apiMethods';
 import { toast } from 'sonner';
 import OTPModal from '../components/Modals/OTPModal';
+import HashLoader from "react-spinners/HashLoader";
+
 
 function Signup() {
   const [isOtpModalOpen,setIsOtpModalOpen] = useState(false)
+  const [loading,setLoading] = useState(false)
   const [email,setEmail] = useState('')
     const initialValues = {
         name:"",
@@ -27,14 +30,22 @@ function Signup() {
         .required("Required"),
     })
         const onSubmit = (values) => {
+          setLoading(true)
           console.log("Data---",values)
           setEmail(values.email)
-          postRegister(values).then((res)=>{
-            const data = res.data
-            if(res.status===200){
-              setIsOtpModalOpen(true)
-            }
-          })
+          try {
+            postRegister(values).then((res)=>{
+              const data = res.data
+              if(res.status===200){
+                setIsOtpModalOpen(true)
+              }
+            })
+          } catch (error) {
+            toast.error(error)
+          } finally {
+            setLoading(false)
+          }
+          
               };
     
       return (
@@ -71,14 +82,16 @@ function Signup() {
           </label>
           <ErrorMessage name="ownershipType" component="div" className="text-red-500" />
         </div>
-            <button  type="submit" className="mt-4 h-10 w-full bg-[#8B8DF2] text-white rounded-md hover:shadow-md">Signup</button>
+            <button  type="submit" className="mt-4 h-10 w-full bg-[#8B8DF2] text-white rounded-md hover:shadow-md" disabled={loading}>
+              {loading ? <HashLoader size={20} className='mt-1' color="#ffffff" /> : "Signup"}
+              </button>
             <Link className="flex mt-2 text-xs text-[#837D7D] w-full md:w-[196px]" to="/login">Already have an account? SignIn</Link>
             
             </Form>
             </Formik>
             </div>
         </div>
-        {isOtpModalOpen && <OTPModal email={email} onClose={()=>setIsOtpModalOpen(false)}/>}
+        {isOtpModalOpen && <OTPModal forgetOtp={false} email={email} onClose={()=>setIsOtpModalOpen(false)}/>}
         </div>
       )
 }
