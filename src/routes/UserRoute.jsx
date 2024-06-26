@@ -9,6 +9,10 @@ import Gallery from '../pages/Gallery'
 import Login from '../pages/Login'
 import Signup from '../pages/Signup'
 import AccountSetup from '../pages/AccountSetup'
+import ForgetPassword from '../pages/ForgetPassword'
+import ChangePassword from '../pages/ChangePassword'
+import Profile from '../pages/Profile'
+import MyVehicles from '../pages/MyVehicles'
 
 function UserRoute() {
   return (
@@ -20,9 +24,13 @@ function UserRoute() {
             <Route path='/about-us' element={<AboutUs />} />
             <Route path='/contact-us' element={<ContactUs />} />
             <Route path='/gallery' element={<Gallery />} />
-            {/* <Route path='/login' element={<Login />} /> */}
+            <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
-            {/* <Route path='/account-setup' element={<AccountSetup />} /> */}
+            <Route path='/forget-password' element={<ForgetPassword />} />
+            <Route path='/change-password' element={<ChangePassword />} />
+            <Route path='/account-setup' element={<AccountSetup />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/my-vehicles' element={<MyVehicles />} />
 
 
             </Routes>
